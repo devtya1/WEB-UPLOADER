@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research & Analysis Wing</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: monospace;
+      background-color: black;
+      color: #00ff00;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background-color: #004400;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      border-bottom: 2px solid #00ff00;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+
+    input {
+      background-color: black;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      padding: 10px;
+      width: 300px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      box-shadow: 0 0 10px #00ff00 inset;
+    }
+
+    button {
+      background-color: #00ff00;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px #00ff00;
+      transition: transform 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .upload-animation {
+      margin-top: 40px;
+      width: 320px;
+      animation: fadein 1s ease-in-out forwards;
+      position: relative;
+    }
+
+    .progress-bar {
+      background-color: #003300;
+      border: 1px solid #00ff00;
+      height: 20px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: repeating-linear-gradient(45deg, #00ff00, #00ff00 10px, #009900 10px, #009900 20px);
+      width: 0;
+      animation: fill 15s ease-in-out forwards;
+      box-shadow: 0 0 20px #00ff00;
+    }
+
+    .upload-text {
+      margin-top: 20px;
+      text-align: center;
+      animation: blink 1s infinite;
+      font-size: 14px;
+      text-shadow: 0 0 5px #00ff00;
+    }
+
+    .radar {
+      margin-top: 40px;
+      width: 200px;
+      height: 200px;
+      border: 3px solid #00ff00;
+      border-radius: 50%;
+      position: relative;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 30px #00ff00 inset;
+    }
+
+    .radar::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40%;
+      height: 2px;
+      background: #00ff00;
+      transform-origin: left;
+      animation: rotate 2s linear infinite;
+      box-shadow: 0 0 15px #00ff00;
+    }
+
+    .radar::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px dashed rgba(0, 255, 0, 0.2);
+      border-radius: 50%;
+      animation: scan 4s linear infinite;
+    }
+
+    .glitch-text {
+      font-size: 14px;
+      text-align: center;
+      color: #00ff00;
+      animation: glitch 1s infinite;
+      margin-top: 10px;
+      display: none;
+    }
+
+    @keyframes fill {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+
+    @keyframes fadein {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes scan {
+      0% { transform: scale(0.9); opacity: 0.2; }
+      50% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(0.9); opacity: 0.2; }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px #00ff00 inset; }
+      50% { box-shadow: 0 0 30px #00ff00 inset; }
+      100% { box-shadow: 0 0 10px #00ff00 inset; }
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 1px 0 red, -1px 0 blue; }
+      20% { text-shadow: 2px 2px red, -2px -2px blue; }
+      40% { text-shadow: -2px 2px red, 2px -2px blue; }
+      60% { text-shadow: 1px 0 red, -1px 0 blue; }
+      80% { text-shadow: 2px -2px red, -2px 2px blue; }
+      100% { text-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">RESEARCH & ANALYSIS WING</div>
+  <div class="container">
+    <input type="text" id="coordinates" placeholder="Enter coordinates (e.g., 28.6139° N, 77.2090° E)">
+    <button onclick="startUpload()">Send</button>
+    <div id="animation" class="upload-animation" style="display: none;">
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay: 0s"></div></div>
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay: 0.3s"></div></div>
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay: 0.6s"></div></div>
+      <div class="progress-bar"><div class="progress-fill" style="animation-delay: 0.9s"></div></div>
+      <div id="uploadText" class="upload-text">Uploading coordinates to satellite network...</div>
+      <div id="glitchText" class="glitch-text">Uploaded to Server SUCCESSFULLY!</div>
+      <div id="radar" class="radar"></div>
+    </div>
+  </div>
+
+  <script>
+    function startUpload() {
+      const animation = document.getElementById("animation");
+      animation.style.display = "block";
+      const fills = document.querySelectorAll(".progress-fill");
+      const radar = document.getElementById("radar");
+      const glitchText = document.getElementById("glitchText");
+      const uploadText = document.getElementById("uploadText");
+
+      fills.forEach((fill, i) => {
+        fill.style.animation = `fill 2s ${i * 0.5}s ease-in-out forwards`;
+      });
+
+      setTimeout(() => {
+        radar.style.display = "none";
+        glitchText.style.display = "block";
+        uploadText.style.display = "none";
+      }, 3200);
+    }
+  </script>
+</body>
+</html>
